@@ -1,0 +1,13 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() { return request.auth != null; }
+    function owns(uid) { return signedIn() && request.auth.uid == uid; }
+    match /students/{uid}/{allPaths=**} { allow read, write: if owns(uid); }
+    match /advisor_verification/{uid}/{allPaths=**} { allow read, write: if owns(uid); }
+    function consultationMember(consultationId) {
+      return signedIn() && request.auth.uid in firestore.get(/databases/(default)/documents/consultations/$(consultationId)).data.participantIds;
+    }
+    match /consultations/{consultationId}/{allPaths=**} { allow read, write: if consultationMember(consultationId); }
+  }
+}
