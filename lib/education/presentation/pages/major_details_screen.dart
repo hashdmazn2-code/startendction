@@ -1,0 +1,5 @@
+import 'package:flutter/material.dart';
+import '../../models/academic_major.dart';
+class MajorDetailsScreen extends StatelessWidget { const MajorDetailsScreen({super.key, required this.major, this.matchPercentage}); final AcademicMajor major; final int? matchPercentage;
+@override Widget build(BuildContext context) => Scaffold(appBar: AppBar(title: Text(major.name)), body: ListView(padding: const EdgeInsets.all(20), children: [if(matchPercentage != null) Chip(label: Text('$matchPercentage% مطابقة')), Text(major.description), const SizedBox(height: 20), _section('المجال', [major.field]), _section('المهارات المطلوبة', major.requiredSkills), _section('الاهتمامات المناسبة', major.suitableInterests), _section('المواد الأساسية', major.coreSubjects), _section('فرص العمل', major.futureJobs), Text('المعدل المطلوب: ${major.minimumGpa.toStringAsFixed(1)}') ]));
+Widget _section(String title,List<String> entries) => Padding(padding: const EdgeInsets.only(bottom: 16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children:[Text(title,style: const TextStyle(fontWeight: FontWeight.bold)), Text(entries.join(' • '))])); }
