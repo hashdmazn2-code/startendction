@@ -7,7 +7,7 @@ service cloud.firestore {
     function owns(uid) { return signedIn() && request.auth.uid == uid; }
     function isConsultationMember() { return signedIn() && request.auth.uid in resource.data.participantIds; }
 
-    match /users/{uid} { allow read: if owns(uid) || isAdmin(); allow create: if owns(uid); allow update: if owns(uid) || isAdmin(); allow delete: if isAdmin(); }
+    match /users/{uid} { allow read: if owns(uid) || isAdmin(); allow create: if owns(uid) && request.resource.data.accountType in ['student', 'advisor']; allow update: if isAdmin() || (owns(uid) && request.resource.data.accountType == resource.data.accountType && request.resource.data.isActive == resource.data.isActive); allow delete: if isAdmin(); }
     match /students/{uid} { allow read, create, update: if owns(uid) || isAdmin(); allow delete: if isAdmin(); }
     match /advisors/{uid} { allow read: if signedIn(); allow create, update: if owns(uid) || isAdmin(); allow delete: if isAdmin(); }
     match /majors/{majorId} { allow read: if signedIn() && (resource.data.isPublished == true || isAdmin()); allow create, update, delete: if isAdmin(); }
