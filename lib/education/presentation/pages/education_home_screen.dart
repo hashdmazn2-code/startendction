@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'assessment_screen.dart';
+import 'assessments_screen.dart';
 import 'recommendations_screen.dart';
+import 'advisors_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class EducationHomeScreen extends StatelessWidget {
   const EducationHomeScreen({super.key});
@@ -39,7 +42,7 @@ class EducationHomeScreen extends StatelessWidget {
               icon: Icons.fact_check_outlined,
               title: 'التقييم التعليمي',
               subtitle: 'حلّل ميولك ومهاراتك وقدراتك',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AssessmentScreen())),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AssessmentsScreen())),
             ),
             _ActionCard(
               icon: Icons.auto_awesome_outlined,
@@ -51,7 +54,7 @@ class EducationHomeScreen extends StatelessWidget {
               icon: Icons.support_agent_rounded,
               title: 'استشر مستشارًا تعليميًا',
               subtitle: 'ابحث عن خبير موثّق واحجز استشارة',
-              onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('تظهر قائمة المستشارين بعد إكمال ملفك الأكاديمي.'))),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AdvisorsScreen(studentId: FirebaseAuth.instance.currentUser!.uid))),
             ),
           ],
         ),

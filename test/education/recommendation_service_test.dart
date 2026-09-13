@@ -56,3 +56,10 @@ void main() {
     expect(service.recommend(student: student, majors: [hiddenMajor]), isEmpty);
   });
 }
+
+test('recommendation score is capped when profile data exceeds requirements', () {
+  const service = RecommendationService();
+  const student = StudentProfile(id: 's', fullName: 'سارة', gpa: 5, skills: ['تحليل'], interests: ['علوم'], favoriteSubjects: ['أحياء'], abilities: ['دقة']);
+  const major = AcademicMajor(id: 'm', name: 'علوم', description: '', field: 'علوم', requiredSkills: ['تحليل'], suitableInterests: ['علوم'], coreSubjects: ['أحياء'], suitableAbilities: ['دقة'], minimumGpa: 4);
+  expect(service.recommend(student: student, majors: [major]).single.matchPercentage, 95);
+});
